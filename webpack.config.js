@@ -24,13 +24,9 @@ const jsLoaders = () => {
       },
     },
   ]
-  if (isDev) {
-    // loaders.push(
-    //     {
-    //         loader: 'eslint-loader',
-    //     },
-    // )
-  }
+  // if (isDev) {
+  //   loaders.push({ loader: 'eslint-loader' })
+  // }
   return loaders
 }
 
@@ -96,7 +92,7 @@ module.exports = {
       // Webpack enables use of loaders to preprocess files.
       // This allows you to bundle any static resource way beyond JavaScript.
       {
-        test: /\.m?js$/,
+        test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
         use: jsLoaders(),
       },
