@@ -68,7 +68,6 @@ export function createTable(rowsCount = 15) {
 
   for (let indexRow = 0; indexRow < rowsCount; indexRow++) {
     const cols = new Array(colsCount)
-
     for (let indexCol = 0; indexCol < colsCount; indexCol++) {
       cols.push(createCell())
     }
