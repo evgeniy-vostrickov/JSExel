@@ -15,6 +15,7 @@
     "google"
   ],
   "rules": {
-    "semi": "off"
+    "semi": "off",
+    "no-debugger": "off"
   }
 }
