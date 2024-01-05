@@ -1,21 +1,49 @@
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "env": {
     "es6": true,
     "browser": true,
     "node": true
   },
-  "parserOptions": {
-    "requireConfigFile": false,
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "extends": [
-    "eslint:recommended",
-    "google"
-  ],
-  "rules": {
-    "semi": "off",
-    "no-debugger": "off"
-  }
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+      },
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "google"
+      ],
+      "rules": {
+        "semi": "off",
+        "no-debugger": "off"
+      }
+    },
+    {
+      "files": [
+        "*.js"
+      ],
+      "parser": "@babel/eslint-parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "requireConfigFile": false,
+        "babelOptions": {
+          "presets": [
+            "@babel/preset-env"
+          ]
+        }
+      }
+    }
+  ]
 }

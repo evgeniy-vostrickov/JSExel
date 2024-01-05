@@ -1,26 +1,33 @@
-// import {$} from "../../core/dom"
+import {Options} from '@/index'
 import {$} from '@core/dom'
+import {Header} from '../header/Header'
+import {Toolbar} from '../toolbar/Toolbar'
+import {Formula} from '../formula/Formula'
+import {Table} from '../table/Table'
 
 /**
  * Class for page Excel
  * @class Excel
  */
 export class Excel {
+  private $element
+  private listComponents
+  private components: (Header | Toolbar | Formula | Table)[]
   /**
 * Constructor
 * @param {string} selector The selector for render.
-* @param {Array<ExcelComponents>} options The array of compontns page Excel.
+* @param {Options} options The array of compontns page Excel.
 */
-  constructor(selector, options) {
+  constructor(selector: string, options: Options) {
     this.$element = $(selector)
-    this.components = options.components || []
+    this.listComponents = options.components
   }
   /**
 * @return {HTMLElement} Root Element which join components to the page Excel.
 */
   getRoot() {
     const $root = $.createElement('div', 'excel')
-    this.components = this.components.map((Component) => {
+    this.components = this.listComponents.map((Component) => {
       const $compontNode = $.createElement('div', Component.classContainer)
       const component = new Component($compontNode)
       // component.name ? window['c' + component.name] = component : ''
@@ -29,6 +36,7 @@ export class Excel {
 
       return component
     })
+
     return $root
   }
   /**

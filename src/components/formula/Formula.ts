@@ -1,3 +1,4 @@
+import {Dom} from '@/core/dom';
 import {ExcelComponents} from '@core/ExcelComponent';
 
 /**
@@ -6,30 +7,24 @@ import {ExcelComponents} from '@core/ExcelComponent';
 * @implements {ExcelComponents}
 */
 export class Formula extends ExcelComponents {
-  static classContainer = 'excel__formula';
+  static classContainer = 'excel__formula'
 
   /**
 * @constructor
 * @param {Dom} $root
 */
-  constructor($root) {
+  constructor($root: Dom) {
     super($root, {
       name: 'Formula',
       listeners: ['input'],
     })
   }
-  /**
-* Get the container class name.
-* @return {string}
-*/
-  // getClassContainer = () => {
-  //   return this.#classContainer;
-  // }
+
   /**
 * Conversion to HTML.
 * @return {string} The sum of the two numbers.
 */
-  toHTML = () => {
+  public toHTML = () => {
     return `
       <div class="info">fx</div>
       <div class="input" contenteditable spellcheck="false"></div>
@@ -40,7 +35,7 @@ export class Formula extends ExcelComponents {
 * Event Input
 * @param {Event} event
 */
-  onInput(event) {
-    console.log('Formula: onInput', event)
+  public onInput(event: Event) {
+    console.log('Formula: onInput', event, this)
   }
 }

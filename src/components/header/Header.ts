@@ -1,3 +1,4 @@
+import {Dom} from '@/core/dom';
 import {ExcelComponents} from '@core/ExcelComponent';
 
 /**
@@ -6,19 +7,24 @@ import {ExcelComponents} from '@core/ExcelComponent';
  * @implements {ExcelComponents}
  */
 export class Header extends ExcelComponents {
-  static classContainer = 'excel__header';
+  static classContainer = 'excel__header'
+
   /**
-* Get the container class name.
-* @return {string}
-*/
-  // getClassContainer = () => {
-  //   return this.#classContainer;
-  // }
+  * @constructor
+  * @param {Dom} $root
+  */
+  constructor($root: Dom) {
+    super($root, {
+      name: 'Header',
+      listeners: [],
+    })
+  }
+
   /**
 * Conversion to HTML.
 * @return {string} The sum of the two numbers.
 */
-  toHTML = () => {
+  public toHTML = () => {
     return `
         <input type="text" class="excel__header-input" value="Новая таблица" />
 
