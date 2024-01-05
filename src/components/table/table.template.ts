@@ -18,7 +18,7 @@ function createCell() {
 * @param {string} col
 * @return {string}
 */
-function toColumn(col) {
+function toColumn(col: string) {
   return `
     <div class="column">${col}</div>
   `
@@ -26,11 +26,11 @@ function toColumn(col) {
 
 /**
 * Function render rows.
-* @param {string} index
+* @param {number | null} index
 * @param {string} content
 * @return {string}
 */
-function createRow(index, content) {
+function createRow(index: number | null, content: string) {
   return `
     <div class="row">
       <div class="row-info">${index ? index : ''}</div>
@@ -42,10 +42,10 @@ function createRow(index, content) {
 /**
 * Function code to symbol conversion.
 * @param {undefined} _
-* @param {string} index
+* @param {number} index
 * @return {string}
 */
-function toChar(_, index) {
+function toChar(_: undefined, index: number) {
   return String.fromCharCode(CODES.A + index)
 }
 

@@ -1,4 +1,10 @@
 import {DomListener} from '@core/DomListener';
+import {Dom} from './dom';
+
+type TypeOptions = {
+  name: string
+  listeners: Array<keyof HTMLElementEventMap>
+}
 
 /**
  * Abstract Class for defining general behavior of components.
@@ -6,42 +12,34 @@ import {DomListener} from '@core/DomListener';
  * @interface ExcelComponents
  * @since 1.0.0
  */
-export class ExcelComponents extends DomListener {
+export abstract class ExcelComponents extends DomListener {
   /**
 * @constructor
 * @param {Dom} $root
 * @param {Object} options
 */
-  constructor($root, options = {}) {
+  constructor($root: Dom, options: TypeOptions) {
     super($root, options.listeners)
-    this.name = options.name || ''
-  }
-
-  /**
-* Get the container class name.
-*/
-  getClassContainer = () => {
-    throw new Error('Method getClassContainer() must be implemented.');
+    this.name = options.name
   }
 
   /**
 * Conversion to HTML.
+* @return {string}
 */
-  toHTML = () => {
-    throw new Error('Method toHTML() must be implemented.');
-  }
+  public abstract toHTML(): string
 
   /**
 * Init the object.
 */
-  init() {
+  public init() {
     this.initDOMListeners()
   }
 
   /**
 * Delete the object.
 */
-  destroy() {
+  public destroy() {
     this.removeDOMListeners()
   }
 }

@@ -1,16 +1,19 @@
+
+
 /**
  * Class for work with Dom
  * @class Dom
  */
-class Dom {
+export class Dom {
+  private $element
   /**
 * @constructor
 * @param {string | HTMLElement} selector
 */
-  constructor(selector) {
+  constructor(selector: string | HTMLElement) {
     this.$element = typeof selector === 'string' ?
-      document.querySelector(selector) :
-      selector
+      document.querySelector(selector) as HTMLElement :
+      selector as HTMLElement
   }
 
   /**
@@ -18,7 +21,7 @@ class Dom {
 * @param {string | HTMLElement} html
 * @return {Dom | string}
 */
-  html(html) {
+  public html(html: string | HTMLElement): Dom | string {
     if (typeof html === 'string') {
       this.$element.innerHTML = html
       return this
@@ -29,32 +32,34 @@ class Dom {
   /**
 * @return {Dom}
 */
-  clear() {
+  public clear() {
     this.html('')
     return this
   }
 
   /**
 * @param {string} eventType
-* @param {Function} callback
+* @param {Function} listener
 */
-  on(eventType, callback) {
-    this.$element.addEventListener(eventType, callback)
+  public on(eventType: keyof HTMLElementEventMap,
+      listener: EventListener) {
+    this.$element.addEventListener(eventType, listener)
   }
 
   /**
 * @param {string} eventType
-* @param {Function} callback
+* @param {Function} listener
 */
-  off(eventType, callback) {
-    this.$element.removeEventListener(eventType, callback)
+  public off(eventType: keyof HTMLElementEventMap,
+      listener: EventListener) {
+    this.$element.removeEventListener(eventType, listener)
   }
 
   /**
 * @param {HTMLElement} node
 * @return {Dom}
 */
-  append(node) {
+  public append(node: HTMLElement | Dom) {
     if (node instanceof Dom) {
       node = node.$element
     }
@@ -73,7 +78,7 @@ class Dom {
 * @param {string} selector
 * @return {Dom}
 */
-export const $ = (selector) => {
+export const $ = (selector: string | HTMLElement) => {
   return new Dom(selector)
 }
 
@@ -82,7 +87,7 @@ export const $ = (selector) => {
 * @param {string} className
 * @return {HTMLElement}
 */
-$.createElement = (tagName, className) => {
+$.createElement = (tagName: string, className: string) => {
   const $el = document.createElement(tagName)
   $el.classList.add(className)
   return $($el)
