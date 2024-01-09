@@ -26,7 +26,8 @@
       ],
       "rules": {
         "semi": "off",
-        "no-debugger": "off"
+        "no-debugger": "off",
+        "linebreak-style": ["error", "windows"]
       }
     },
     {
