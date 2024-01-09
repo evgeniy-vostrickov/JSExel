@@ -3,6 +3,9 @@ import {Dom} from './dom'
 
 interface EventListenerSignatureInterface {
   onInput: EventListener
+  onMouseDown: EventListener
+  onMouseup: EventListener
+  onMousemove: EventListener
 }
 /**
  * Abstract Class for describes signature event listener
@@ -14,6 +17,27 @@ abstract class ListenerSignature implements EventListenerSignatureInterface {
 */
   onInput(event: Event): void {
     throw new Error(`Method onInput() is not implemented. Event: ${event}`)
+  }
+  /**
+* Event MouseDown
+* @param {Event} event
+*/
+  onMouseDown(event: Event): void {
+    throw new Error(`Method onMouseDown() is not implemented. Event: ${event}`)
+  }
+  /**
+* Event onMouseup
+* @param {Event} event
+*/
+  onMouseup(event: Event): void {
+    throw new Error(`Method onMouseup() is not implemented. Event: ${event}`)
+  }
+  /**
+* Event onMousemove
+* @param {Event} event
+*/
+  onMousemove(event: Event): void {
+    throw new Error(`Method onMousemove() is not implemented. Event: ${event}`)
   }
 }
 
@@ -41,8 +65,7 @@ export abstract class DomListener extends ListenerSignature {
       const methodListener = this[methodName]
       if (typeof methodListener !== 'function') {
         const name = this.name || ''
-        throw new Error(`Method ${methodName} is not 
-        implemented in ${name} Component`)
+        throw new Error(`Method ${methodName} is not implemented in ${name}`)
       }
 
       const newMethod = methodListener.bind(this)
@@ -68,12 +91,6 @@ export abstract class DomListener extends ListenerSignature {
       this.$root.off(listener, methodListener)
     })
   }
-
-  /**
-  * Event Input
-  * @param {Event} event
-  */
-  // protected abstract onInput(event: Event): void
 }
 
 /**

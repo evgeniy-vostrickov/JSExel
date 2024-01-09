@@ -1,4 +1,6 @@
-
+interface IStyles {
+  [key: string]: string | number;
+}
 
 /**
  * Class for work with Dom
@@ -17,6 +19,14 @@ export class Dom {
   }
 
   /**
+  * Getter $element.
+  * @return {HTMLElement}
+  */
+  get getElement(): HTMLElement {
+    return this.$element
+  }
+
+  /**
    * Getter and setter for Node.
 * @param {string | HTMLElement} html
 * @return {Dom | string}
@@ -32,7 +42,7 @@ export class Dom {
   /**
 * @return {Dom}
 */
-  public clear() {
+  public clear(): Dom {
     this.html('')
     return this
   }
@@ -59,7 +69,7 @@ export class Dom {
 * @param {HTMLElement} node
 * @return {Dom}
 */
-  public append(node: HTMLElement | Dom) {
+  public append(node: HTMLElement | Dom): Dom {
     if (node instanceof Dom) {
       node = node.$element
     }
@@ -71,6 +81,53 @@ export class Dom {
     }
 
     return this
+  }
+
+  /**
+* Find parent element by selector
+* @param {string} selector
+* @return {Dom}
+*/
+  public closest(selector: string): Dom {
+    return $(this.$element.closest<HTMLElement>(selector))
+  }
+
+  /**
+* Get coords $element
+* @return {DOMRect}
+*/
+  getCoords(): DOMRect {
+    return this.$element.getBoundingClientRect()
+  }
+
+  /**
+  * Get data-attribute
+  * @param {string} attribute
+  * @return {string}
+  */
+  public getDataAttribute(attribute: string): string {
+    return this.$element.dataset[attribute]
+  }
+
+  /**
+  * Get data-attribute
+  * @param {string} selector
+  * @return {Array<HTMLElement>}
+  */
+  public findAllNode(selector: string): Array<HTMLElement> {
+    return Array.from(this.$element.querySelectorAll<HTMLElement>(selector))
+  }
+
+  /**
+  * Get data-attribute
+  * @param {string} styles
+  */
+  public addStyles(styles: IStyles) {
+    for (const [property, value] of Object.entries(styles)) {
+      if (styles.hasOwnProperty(property)) {
+        this.$element.style[property as keyof CSSStyleDeclaration] = value
+      }
+    }
   }
 }
 
