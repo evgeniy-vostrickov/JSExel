@@ -4,6 +4,7 @@ import {Header} from '../header/Header'
 import {Toolbar} from '../toolbar/Toolbar'
 import {Formula} from '../formula/Formula'
 import {Table} from '../table/Table'
+import {Emitter} from '@/core/Emitter'
 
 /**
  * Class for page Excel
@@ -12,6 +13,7 @@ import {Table} from '../table/Table'
 export class Excel {
   private $element
   private listComponents
+  private emitter
   private components: (Header | Toolbar | Formula | Table)[]
   /**
 * Constructor
@@ -21,6 +23,7 @@ export class Excel {
   constructor(selector: string, options: Options) {
     this.$element = $(selector)
     this.listComponents = options.components
+    this.emitter = new Emitter()
   }
   /**
 * @return {HTMLElement} Root Element which join components to the page Excel.
@@ -29,7 +32,7 @@ export class Excel {
     const $root = $.createElement('div', 'excel')
     this.components = this.listComponents.map((Component) => {
       const $compontNode = $.createElement('div', Component.classContainer)
-      const component = new Component($compontNode)
+      const component = new Component($compontNode, {emitter: this.emitter})
       // component.name ? window['c' + component.name] = component : ''
       $compontNode.html(component.toHTML())
       $root.append($compontNode)

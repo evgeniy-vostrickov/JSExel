@@ -4,40 +4,40 @@ import {Dom} from './dom'
 interface EventListenerSignatureInterface {
   onInput: EventListener
   onMouseDown: EventListener
-  onMouseup: EventListener
-  onMousemove: EventListener
+  onClick: EventListener
+  onKeydown: EventListener
 }
 /**
  * Abstract Class for describes signature event listener
  */
 abstract class ListenerSignature implements EventListenerSignatureInterface {
   /**
-* Event Input
+* Event input
 * @param {Event} event
 */
   onInput(event: Event): void {
     throw new Error(`Method onInput() is not implemented. Event: ${event}`)
   }
   /**
-* Event MouseDown
+* Event mouseDown
 * @param {Event} event
 */
   onMouseDown(event: Event): void {
     throw new Error(`Method onMouseDown() is not implemented. Event: ${event}`)
   }
   /**
-* Event onMouseup
+* Event keydown
 * @param {Event} event
 */
-  onMouseup(event: Event): void {
-    throw new Error(`Method onMouseup() is not implemented. Event: ${event}`)
+  onKeydown(event: Event): void {
+    throw new Error(`Method onKeydown() is not implemented. Event: ${event}`)
   }
   /**
-* Event onMousemove
+* Event click
 * @param {Event} event
 */
-  onMousemove(event: Event): void {
-    throw new Error(`Method onMousemove() is not implemented. Event: ${event}`)
+  onClick(event: Event): void {
+    throw new Error(`Method onClick() is not implemented. Event: ${event}`)
   }
 }
 

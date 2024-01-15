@@ -1,16 +1,20 @@
-const CODES = {
-  A: 65,
-  Z: 90,
-}
+import {CODES, COL_COUNT, ROW_COUNT} from './table.resources'
+
 
 /**
 * Function name column to column HTML conversion.
-* @param {string} col
+* @param {number} row
+* @param {number} col
 * @return {string}
 */
-function createCell(col: number) {
+function createCell(row: number, col: number) {
   return `
-    <div class="cell" contenteditable data-col="${col}"></div>
+    <div class="cell" contenteditable 
+      data-type="cell" 
+      data-col="${col}" 
+      data-id="${row}:${col}"
+    >
+    </div>
   `
 }
 
@@ -64,11 +68,10 @@ function toChar(_: undefined, index: number) {
 * @param {number} rowsCount
 * @return {string}
 */
-export function createTable(rowsCount = 15) {
-  const colsCount = CODES.Z - CODES.A + 1
+export function createTable(rowsCount = ROW_COUNT) {
   const rows = []
 
-  const colsName = new Array(colsCount)
+  const colsName = new Array(COL_COUNT)
       .fill('')
       .map(toChar)
       .map(toColumn)
@@ -77,9 +80,9 @@ export function createTable(rowsCount = 15) {
   rows.push(createRow(null, colsName))
 
   for (let indexRow = 0; indexRow < rowsCount; indexRow++) {
-    const cols = new Array(colsCount)
-    for (let indexCol = 0; indexCol < colsCount; indexCol++) {
-      cols.push(createCell(indexCol))
+    const cols = new Array(COL_COUNT)
+    for (let indexCol = 0; indexCol < COL_COUNT; indexCol++) {
+      cols.push(createCell(indexRow, indexCol))
     }
 
     rows.push(createRow(indexRow + 1, cols.join('')))
