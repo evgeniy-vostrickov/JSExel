@@ -1,4 +1,5 @@
 import {Dom} from '@/core/dom';
+import TypeOptionsComponent from '@/models/TypeOptionsComponent';
 import {ExcelComponents} from '@core/ExcelComponent';
 
 /**
@@ -12,13 +13,20 @@ export class Toolbar extends ExcelComponents {
   /**
   * @constructor
   * @param {Dom} $root
+  * @param {TypeOptionsComponent} options
   */
-  constructor($root: Dom) {
+  constructor($root: Dom, options: TypeOptionsComponent) {
     super($root, {
       name: 'Toolbar',
       listeners: [],
+      ...options,
     })
   }
+
+  /**
+  * Prepare for initialization.
+  */
+  public prepare() {}
 
   /**
 * Conversion to HTML.

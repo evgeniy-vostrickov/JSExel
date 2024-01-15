@@ -1,4 +1,7 @@
 import {$, Dom} from '@/core/dom'
+import {MIN_HEIGHT_ROW, MIN_WIDTH_COLUMN, selectorTypeResizable}
+  from './table.resources'
+import {getColumnSelector, isColumnResize, isRowResize} from './table.utils'
 
 /**
 * Change dimension row or column.
@@ -9,15 +12,15 @@ function resizeHandler($root: Dom, event: Event) {
   const $resize = $(event.target as HTMLElement)
   const mouseEvent = event as MouseEvent
   const resizeElement = $resize.getElement
-  if (resizeElement.dataset['resize'] === 'row') {
-    const $row = $resize.closest('[data-type="resizable"]')
+  if (isRowResize(resizeElement)) {
+    const $row = $resize.closest(selectorTypeResizable)
     const {height} = $row.getCoords()
     const startPositionMouse = mouseEvent.pageY
     let delta = 0
 
     document.onmousemove = (ev: MouseEvent) => {
       delta = ev.pageY - startPositionMouse
-      if (delta > 0 || height + delta > 20) {
+      if (delta > 0 || height + delta > MIN_HEIGHT_ROW) {
         $resize.addStyles({
           bottom: `${-delta}px`,
           right: '-3500px',
@@ -30,23 +33,23 @@ function resizeHandler($root: Dom, event: Event) {
       document.onmousemove = null
       document.onmouseup = null
       let newHeight = height + delta
-      if (newHeight < 0 || newHeight < 20) {
-        newHeight = 20
+      if (newHeight < 0 || newHeight < MIN_HEIGHT_ROW) {
+        newHeight = MIN_HEIGHT_ROW
       }
       $row.addStyles({height: `${newHeight}px`})
-      $resize.addStyles({bottom: 0, opacity: 0})
+      $resize.addStyles({bottom: 0, right: 0, opacity: 0})
     }
-  } else if (resizeElement.dataset['resize'] === 'column') {
-    const $column = $resize.closest('[data-type="resizable"]')
+  } else if (isColumnResize(resizeElement)) {
+    const $column = $resize.closest(selectorTypeResizable)
     const {width} = $column.getCoords()
     const startPositionMouse = mouseEvent.pageX
     const indexColumn = $column.getDataAttribute('col')
-    const listCell = $root.findAllNode(`[data-col="${indexColumn}"]`)
+    const listCell = $root.findAllNode(getColumnSelector(indexColumn))
     let delta = 0
 
     document.onmousemove = (ev: MouseEvent) => {
       delta = ev.pageX - startPositionMouse
-      if (delta > 0 || width + delta > 40) {
+      if (delta > 0 || width + delta > MIN_WIDTH_COLUMN) {
         $resize.addStyles({
           right: `${-delta}px`,
           bottom: `-500px`,
@@ -59,13 +62,13 @@ function resizeHandler($root: Dom, event: Event) {
       document.onmousemove = null
       document.onmouseup = null
       let newWidth = width + delta
-      if (newWidth < 0 || newWidth < 40) {
-        newWidth = 40
+      if (newWidth < 0 || newWidth < MIN_WIDTH_COLUMN) {
+        newWidth = MIN_WIDTH_COLUMN
       }
 
       listCell.forEach((cell) => {
         $(cell).addStyles({width: `${newWidth}px`})
-        $resize.addStyles({right: 0, opacity: 0})
+        $resize.addStyles({right: 0, bottom: 0, opacity: 0})
       })
     }
   }
