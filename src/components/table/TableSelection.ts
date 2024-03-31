@@ -1,5 +1,6 @@
 import {Dom} from '@/core/dom'
 import {classNameSelected} from './table.resources'
+import {PartialButtonStyle} from '@/models/TButtonOption'
 
 /**
  * Middleware class between Table and View
@@ -48,7 +49,19 @@ export class TableSelection {
   }
 
   /**
-  * Add style class for the group cells (by SHIFT).
+  * Get the selected cells.
+  * @return {Dom | Dom[]} $cell
+  */
+  public getSelectionCells = (): Dom | Dom[] => {
+    if (this.listCellsActive.length) {
+      return this.listCellsActive
+    } else {
+      return this.currentCell
+    }
+  }
+
+  /**
+  * Add style class for the cells group (by SHIFT).
   * @param {Array<Dom>} cellGroup
   */
   public selectGroupCells = (cellGroup: Array<Dom>) => {
@@ -66,5 +79,19 @@ export class TableSelection {
       cell.removeStyleClasses(classNameSelected)
     })
     this.listCellsActive = []
+  }
+
+  /**
+  * Add styles in the selected cell or cells group.
+  * @param {PartialButtonStyle} styles
+  */
+  public addStylesInSelectedCells = (styles: PartialButtonStyle) => {
+    if (this.listCellsActive.length) {
+      for (const cell of this.listCellsActive) {
+        cell.addStyles(styles)
+      }
+    } else {
+      this.currentCell.addStyles(styles)
+    }
   }
 }

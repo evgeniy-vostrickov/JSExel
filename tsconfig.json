@@ -18,7 +18,10 @@
       "@core/*": [
         "core/*"
       ],
-    }
+    },
+    "plugins": [
+      { "name": "@typescript-eslint" }
+    ]
   },
   "ts-node": {
     "compilerOptions": {

@@ -6,6 +6,7 @@ interface EventListenerSignatureInterface {
   onMouseDown: EventListener
   onClick: EventListener
   onKeydown: EventListener
+  onChange: EventListener
 }
 /**
  * Abstract Class for describes signature event listener
@@ -37,6 +38,13 @@ abstract class ListenerSignature implements EventListenerSignatureInterface {
 * @param {Event} event
 */
   onClick(event: Event): void {
+    throw new Error(`Method onClick() is not implemented. Event: ${event}`)
+  }
+  /**
+* Event change
+* @param {Event} event
+*/
+  onChange(event: Event): void {
     throw new Error(`Method onClick() is not implemented. Event: ${event}`)
   }
 }

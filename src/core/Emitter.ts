@@ -6,9 +6,8 @@ interface MEvent {
 }
 
 /**
- * Class for component Table of page Excel
- * @class Table
- * @implements {ExcelComponents}
+ * Class for monitoring the occurrence of an event
+ * @class Emitter
  */
 export class Emitter {
   private listeners: MEvent = {}

@@ -27,8 +27,7 @@
       "rules": {
         "semi": "off",
         "no-debugger": "off",
-        // "no-explicit-any": "off",
-        "ignoreRestArgs": true,
+        "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }], /*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
         "linebreak-style": ["error", "windows"]
       }
     },

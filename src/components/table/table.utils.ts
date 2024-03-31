@@ -1,5 +1,7 @@
 import {Dom} from '@/core/dom'
 import {COL_COUNT, ROW_COUNT} from './table.resources'
+import {TCellValues} from '@/models/TAction'
+import {PartialButtonStyle} from '@/models/TButtonOption'
 
 export const isRowResize = (resizeElement: HTMLElement) => {
   return resizeElement.dataset['resize'] === 'row'
@@ -20,6 +22,10 @@ export const isSelectCell = (event: Event) => {
   return target.dataset['type'] === 'cell'
 }
 
+export const getRowSelector = (indexRow: string) => {
+  return `[data-row="${indexRow}"]`
+}
+
 export const getColumnSelector = (indexColumn: string) => {
   return `[data-col="${indexColumn}"]`
 }
@@ -27,6 +33,8 @@ export const getColumnSelector = (indexColumn: string) => {
 export const getCellSelector = (rowIndex: number, columnIndex: number) => {
   return `[data-id="${rowIndex}:${columnIndex}"]`
 }
+
+export const getCellID = (rowId: number, colId: number) => `${rowId}:${colId}`
 
 /*
 * @return {[number:number]} Return [rowId:colId]
@@ -72,4 +80,29 @@ export const rangeCellGroup = ($root: Dom, $start: Dom, $end: Dom) => {
 
 export const isWithinTable = (rowId: number, colId: number) => {
   return (rowId >= 0 && rowId < ROW_COUNT && colId >= 0 && colId < COL_COUNT)
+}
+
+export const convertStringToStyleObject = (str: string): PartialButtonStyle =>
+  str ? JSON.parse(str) : {}
+
+export const isEmptyCell = (cell: TCellValues, isStyle = false) =>
+  !cell || cell?.text === '' || (isStyle && cell?.style === '')
+
+export const checkForStyles = (cell: TCellValues) => !isEmptyCell(cell, true)
+
+export const getCellText = (cell: TCellValues) => {
+  return !isEmptyCell(cell) ? cell.text : ''
+}
+
+const camelToDashCase = (str: string) => {
+  return str.replace(/([A-Z])/g, (g: string) => `-${g[0].toLowerCase()}`)
+}
+
+export const styleObjectToString = (cell: TCellValues): string => {
+  if (!isEmptyCell(cell, true)) {
+    const styles = convertStringToStyleObject(cell?.style)
+    return Object.entries(styles).map(([key, val]) =>
+      `${camelToDashCase(key)}:${val}`).join(';')
+  }
+  return ''
 }

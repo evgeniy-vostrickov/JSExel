@@ -90,7 +90,7 @@ export class Dom {
   * @param {string} selector
   * @return {Dom}
   */
-  public closest(selector: string): Dom {
+  public closest(selector: string): Dom | null {
     return $(this.$element.closest<HTMLElement>(selector))
   }
 
@@ -109,6 +109,24 @@ export class Dom {
   */
   public getDataAttribute(attribute: string): string {
     return this.$element.dataset[attribute]
+  }
+
+  /**
+  * Set data-attribute
+  * @param {string} attribute
+  * @param {string} value
+  */
+  public setDataAttribute(attribute: string, value: string) {
+    this.$element.setAttribute(attribute, value)
+  }
+
+  /**
+  * Get data-attribute
+  * @param {string} attribute
+  * @return {boolean}
+  */
+  public isDataAttribute(attribute: string): boolean {
+    return this.$element.dataset[attribute] ? true : false
   }
 
   /**
@@ -162,6 +180,16 @@ export class Dom {
   }
 
   /**
+  * Toggle classes
+  * @param {string} className
+  * @return {Dom} Return DOM
+  */
+  public toggleStyleClasses(className: string): Dom {
+    this.$element.classList.toggle(className)
+    return this
+  }
+
+  /**
   * The element receives focus
   */
   public focus() {
@@ -169,7 +197,7 @@ export class Dom {
   }
 
   /**
-  * The element receives focus
+  * Set innerText element
   * @param {string} text
   */
   set setElementText(text: string) {
@@ -177,7 +205,7 @@ export class Dom {
   }
 
   /**
-  * The element receives focus
+  * Get innerText element
   * @param {string} text
   */
   get getElementText() {

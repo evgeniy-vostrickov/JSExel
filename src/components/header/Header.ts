@@ -1,6 +1,10 @@
-import {Dom} from '@/core/dom';
-import TypeOptionsComponent from '@/models/TypeOptionsComponent';
-import {ExcelComponents} from '@core/ExcelComponent';
+import {Dom} from '@/core/dom'
+import {TState} from '@/models/TState'
+import TypeOptionsComponent from '@/models/TypeOptionsComponent'
+import {actions} from '@/redux/rootReducer'
+import {ExcelComponents} from '@core/ExcelComponent'
+import {getTableTitle} from './table.utils'
+import {debounce} from '@/core/utils'
 
 /**
  * Class for component Header of page Excel
@@ -18,7 +22,8 @@ export class Header extends ExcelComponents {
   constructor($root: Dom, options: TypeOptionsComponent) {
     super($root, {
       name: 'Header',
-      listeners: [],
+      listeners: ['input'],
+      subscribe: [],
       ...options,
     })
   }
@@ -26,15 +31,19 @@ export class Header extends ExcelComponents {
   /**
   * Prepare for initialization.
   */
-  public prepare() {}
+  public prepare() {
+    this.onInput = debounce(this.onInput, 300)
+  }
 
   /**
-* Conversion to HTML.
-* @return {string} The sum of the two numbers.
-*/
+  * Conversion to HTML.
+  * @return {string} The sum of the two numbers.
+  */
   public toHTML = () => {
+    const title = getTableTitle(this.store.getState())
     return `
-        <input type="text" class="excel__header-input" value="Новая таблица" />
+        <input type="text" id="table-titile" class="excel__header-input" 
+          value="${title}" />
 
         <div>
 
@@ -48,5 +57,23 @@ export class Header extends ExcelComponents {
 
         </div>
     `
+  }
+
+  /**
+  * Function  called when store changed and component monitor changes
+  * @param {TState} slice
+  */
+  public storeChanged = (slice: TState) => {
+    console.log('Header', slice)
+  }
+
+  /**
+  * Function called when an user changes a table title
+  * @param {Event} event
+  */
+  onInput(event: Event): void {
+    const title = (event.target as HTMLInputElement).value
+    this.$dispatch(actions.changeTableTitle(title))
+    console.log('onInput')
   }
 }

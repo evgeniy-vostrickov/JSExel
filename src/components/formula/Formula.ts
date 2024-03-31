@@ -1,6 +1,12 @@
 import {$, Dom} from '@/core/dom'
 import {ExcelComponents} from '@core/ExcelComponent'
 import TypeOptionsComponent from '@/models/TypeOptionsComponent'
+import {TState} from '@/models/TState'
+import {actions} from '@/redux/rootReducer'
+import {getFirstCell} from '@/core/utils'
+import {getCellText} from '../table/table.utils'
+import {FORMULA_ENTER} from '../table/table.resources'
+import {FORMULA_ID} from './formula.resources'
 
 /**
 * Class for component Formula of page Excel
@@ -9,6 +15,7 @@ import TypeOptionsComponent from '@/models/TypeOptionsComponent'
 */
 export class Formula extends ExcelComponents {
   static classContainer = 'excel__formula'
+  private $formula: Dom
 
   /**
   * @constructor
@@ -19,6 +26,7 @@ export class Formula extends ExcelComponents {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
+      subscribe: ['cellChangeText'],
       ...options,
     })
   }
@@ -33,13 +41,19 @@ export class Formula extends ExcelComponents {
   */
   public init() {
     super.init()
-    const $formula = this.$root.findNode('#formula')
-    this.$on('table:select', (text: string) => {
-      $formula.setElementText = text
-    })
-    this.$on('table:input', (text: string) => {
-      $formula.setElementText = text
-    })
+    this.$formula = this.$root.findNode(FORMULA_ID)
+    const firstCell = getFirstCell(this.store.getState())
+    this.$formula.setElementText = getCellText(firstCell)
+    // this.$on('table:select', (text: string) => {
+    //   $formula.setElementText = text
+    // })
+    // this.$on('table:input', (text: string) => {
+    //   $formula.setElementText = text
+    // })
+
+    // this.store.subscribe((state: TState) => {
+    //   $formula.setElementText = state.cellChangeText.text
+    // })
   }
 
   /**
@@ -54,12 +68,31 @@ export class Formula extends ExcelComponents {
   }
 
   /**
+  * Function  called when store changed and component monitor changes
+  * @param {TState} slice
+  */
+  public storeChanged = (slice: TState) => {
+    this.$formula.setElementText = slice.cellChangeText.text
+  }
+
+  /**
   * Event Input
   * @param {Event} event
   */
   public onInput(event: Event) {
     const $formula = $(event.target as HTMLInputElement)
-    this.$emit('formula:input', $formula.getElementText)
+    // this.$emit('formula:input', $formula.getElementText)
+    // this.store.dispatch(
+    //     actions.changeText(
+    //         {
+    //           cellId: this.store.getState().cellChangeText.cellId,
+    //           text: $formula.getElementText,
+    //         },
+    //     ),
+    // )
+    this.store.dispatch(
+        actions.formulaChangeText($formula.getElementText),
+    )
   }
 
   /**
@@ -71,7 +104,7 @@ export class Formula extends ExcelComponents {
     const keyList = ['Enter', 'Tab']
     if (keyList.includes(keyEvent.key)) {
       keyEvent.preventDefault()
-      this.$emit('formula:enter')
+      this.$emit(FORMULA_ENTER)
     }
   }
 }
